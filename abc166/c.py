@@ -33,16 +33,10 @@ class ObservatoryController():
 
 
 class Observatory():
-    id = None
-    height = None
-    connected_to = []
-
-
     def __init__(self, id, height):
         self.id = id
         self.height = height
-        self.connected_to = []
-
+        self.connected_to_by_id = {}
 
     def __repr__(self):
         construct = json.dumps({
@@ -52,11 +46,10 @@ class Observatory():
         return "<Observatory '%s'>" % (construct)
 
     def connect_to(self, a_observaotry):
-        self.connected_to.append(a_observaotry)
-    
+        self.connected_to_by_id[a_observaotry.id] = a_observaotry
+
     def is_good(self):
-        for a_connected_observatory in list(self.connected_to):
-            # debug('comparing...', self, a_connected_observatory)
+        for a_connected_observatory in self.connected_to_by_id.values():
             if self.height <= a_connected_observatory.height:
                 return False
         return True
